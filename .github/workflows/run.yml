@@ -15,11 +15,11 @@ jobs:
 
       - name: Download Mend CLI
         run: |
-          Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "$InstallDir\mend.exe"
+          Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
         shell: pwsh
       
       - name: Run Mend Scan
-        run: mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543
+        run: ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543
         shell: pwsh
         env:
           MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
