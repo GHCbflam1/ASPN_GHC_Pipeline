@@ -13,13 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Environment
-        run: |
-          $ErrorActionPreference = 'Stop'
-          if (-not $env:MEND_EMAIL) { throw "MEND_EMAIL is required" }
-          if (-not $env:MEND_USER_KEY) { throw "MEND_USER_KEY is required" }
-        shell: pwsh
-
       - name: Download Mend CLI
         run: |
           Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "$InstallDir\mend.exe"
