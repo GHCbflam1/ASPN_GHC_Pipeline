@@ -15,20 +15,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download Mend CLI
-        run: |
-          Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
-        shell: pwsh
-      
-      - name: Run Mend Scan
         shell: pwsh
         env:
           MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
-          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+          MEND_USER_KEY: ${{ secrets.MEND_USERKEY }}
         run: |
-          ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
-          echo "$env:secrets.MEND_EMAIL"
-          echo "$env:secrets.MEND_USER_KEY"
-      
+          Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
+
       - name: Upload Scan Results
         if: always()
         uses: actions/upload-artifact@v3
