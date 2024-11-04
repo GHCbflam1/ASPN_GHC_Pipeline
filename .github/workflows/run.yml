@@ -1,45 +1,40 @@
-#!/bin/bash
 
-# Script to run Mend security scan
+name: Mend Security Scan
 
-# Default project token
-PROJECT_TOKEN="3d6d7e8c-5a94-4963-909b-eacbe5173543"
+on:
+  push:
+    branches: [ dev ]
 
-# Create temporary directory for scan results
-SCAN_DIR="./whitesource"
-mkdir -p "$SCAN_DIR"
+jobs:
+  security-scan:
+    name: Mend Security Scan
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-# Download Mend CLI
-echo "Downloading Mend CLI..."
-if ! curl -f -L https://downloads.mend.io/cli/windows_amd64/mend.exe -o mend && chmod +x mend; then
-    echo "Error: Failed to download Mend CLI"
-    exit 1
-fi
-
-# Display environment variables (redacted for security)
-echo "Using MEND_EMAIL: ${MEND_EMAIL}"
-echo "Using MEND_USER_KEY: ${MEND_USER_KEY:0:3}..." # Only show first 3 characters
-
-# Run Mend scan
-echo "Running Mend scan..."
-if ! ./mend ua --projectToken "$PROJECT_TOKEN"; then
-    echo "Error: Mend scan failed"
-    # Still preserve the scan results even if scan fails
-    if [ -d "$SCAN_DIR" ]; then
-        echo "Scan results are available in $SCAN_DIR"
-        tar -czf mend-scan-results.tar.gz "$SCAN_DIR" .whitesource 2>/dev/null || true
-    fi
-    exit 1
-fi
-
-# Archive scan results
-echo "Archiving scan results..."
-if [ -d "$SCAN_DIR" ]; then
-    if tar -czf mend-scan-results.tar.gz "$SCAN_DIR" .whitesource 2>/dev/null; then
-        echo "Scan results archived to mend-scan-results.tar.gz"
-    else
-        echo "Warning: Failed to archive scan results"
-    fi
-fi
-
-echo "Mend security scan completed successfully"
+      - name: Download Mend CLI
+        run: |
+          Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
+        shell: pwsh
+      
+      - name: Run Mend Scan
+        shell: pwsh
+        env:
+          MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+        run: |
+          ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
+          echo "$env:secrets.MEND_EMAIL"
+          echo "$env:secrets.MEND_USER_KEY"
+      
+      - name: Upload Scan Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: mend-scan-results
+          path: |
+            whitesource/**
+            .whitesource
+          retention-days: 7
