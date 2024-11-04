@@ -5,18 +5,6 @@
 # Default project token
 PROJECT_TOKEN="3d6d7e8c-5a94-4963-909b-eacbe5173543"
 
-# Check required environment variables
-check_env_var() {
-    if [ -z "${!1}" ]; then
-        echo "Error: Required environment variable $1 is not set"
-        exit 1
-    fi
-}
-
-# Required environment variables
-check_env_var "MEND_EMAIL"
-check_env_var "MEND_USER_KEY"
-
 # Create temporary directory for scan results
 SCAN_DIR="./whitesource"
 mkdir -p "$SCAN_DIR"
