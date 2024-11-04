@@ -24,7 +24,9 @@ jobs:
           MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
           MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
         run: |
-          ./mend.exe dep -u -s "BenF Demo//GHC_Pipeline//ASPN_DEP"
+          ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
+          echo "$env:MEND_EMAIL"
+          echo "$env:MEND_USER_KEY"
 
       
       - name: Upload Scan Results
