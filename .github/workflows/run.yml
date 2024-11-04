@@ -22,8 +22,8 @@ jobs:
         run: ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543
         shell: pwsh
         env:
-          MEND_EMAIL: $(secrets.MEND_EMAIL)
-          MEND_USER_KEY: $(secrets.MEND_USER_KEY)
+          MEND_EMAIL: "$MEND_EMAIL"
+          MEND_USER_KEY: "$MEND_USER_KEY"
       
       - name: Upload Scan Results
         if: always()
