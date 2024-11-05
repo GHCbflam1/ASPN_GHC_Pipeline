@@ -21,10 +21,11 @@ jobs:
           MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
         run: |
           Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
-          ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
+          ./mend.exe auth login
           echo "$env:MEND_EMAIL"
           echo "$env:MEND_USER_KEY"
           echo "$env:MEND_URL"
+          ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
 
       - name: Upload Scan Results
         if: always()
