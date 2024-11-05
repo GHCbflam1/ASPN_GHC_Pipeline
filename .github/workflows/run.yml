@@ -18,7 +18,7 @@ jobs:
         shell: pwsh
         env:
           MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
-          MEND_USER_KEY: ${{ secrets.MEND_USERKEY }}
+          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
         run: |
           Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
           ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
