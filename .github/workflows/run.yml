@@ -7,7 +7,10 @@ on:
 
 jobs:
   security-scan:
-    name: Mend Security Scan
+    env:
+      MEND_EMAIL: ${{secrets.MEND_EMAIL}}
+      MEND_USER_KEY: ${{secrets.MEND_USER_KEY}}
+      MEND_URL_: https://saas.whitesourcesoftware.com/
     runs-on: windows-latest
     
     steps:
@@ -16,9 +19,6 @@ jobs:
 
       - name: Download Mend CLI
         shell: pwsh
-        env:
-          MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
-          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
         run: |
           Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
           echo "$env:MEND_URL"
