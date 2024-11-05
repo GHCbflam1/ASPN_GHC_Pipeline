@@ -20,9 +20,9 @@ jobs:
       - name: Download Mend CLI
         run: |
           Invoke-WebRequest -Uri "https://downloads.mend.io/cli/windows_amd64/mend.exe" -OutFile "mend.exe"
-          echo "$env:MEND_URL"
-          echo "$env:MEND_EMAIL"
-          echo "$env:MEND_USER_KEY"
+          Write-Host "$env:MEND_URL"
+          Write-Host "$env:MEND_EMAIL"
+          Write-Host "$env:MEND_USER_KEY"
           ./mend.exe ua --projectToken 3d6d7e8c-5a94-4963-909b-eacbe5173543 
 
       - name: Upload Scan Results
